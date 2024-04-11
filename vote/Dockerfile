@@ -11,6 +11,10 @@ WORKDIR /usr/local/app
 
 # Install our requirements.txt
 COPY requirements.txt ./requirements.txt
+
+#AppD config
+COPY appdynamics.cfg ./appdynamics.cfg
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Define a stage specifically for development, where it'll watch for
@@ -30,4 +34,7 @@ COPY . .
 EXPOSE 80
 
 # Define our command to be run when launching the container
-CMD ["gunicorn", "app:app", "-b", "0.0.0.0:80", "--log-file", "-", "--access-logfile", "-", "--workers", "4", "--keep-alive", "0"]
+# CMD ["gunicorn", "app:app", "-b", "0.0.0.0:80", "--log-file", "-", "--access-logfile", "-", "--workers", "4", "--keep-alive", "0"]
+
+#AppD config
+CMD ["pyagent","run","-c","appdynamics.cfg","--", "gunicorn", "app:app", "-b", "0.0.0.0:80", "--log-file", "-", "--access-logfile", "-", "--workers", "4", "--keep-alive", "0"]
