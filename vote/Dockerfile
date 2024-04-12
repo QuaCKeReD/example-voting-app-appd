@@ -22,7 +22,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 FROM base AS dev
 RUN pip install watchdog
 ENV FLASK_ENV=development
-CMD ["python", "app.py"]
+# CMD ["python", "app.py"]
+#AppD config
+CMD ["pyagent", "run", "-c", "./appdynamics.cfg", "--", "gunicorn", "-b", "0.0.0.0:80", "--workers", "4", "--keep-alive", "0", "app:app"]
 
 # Define the final stage that will bundle the application for production
 FROM base AS final
@@ -34,8 +36,5 @@ COPY . .
 EXPOSE 80
 
 # Define our command to be run when launching the container
-# CMD ["gunicorn", "app:app", "-b", "0.0.0.0:80", "--log-file", "-", "--access-logfile", "-", "--workers", "4", "--keep-alive", "0"]
+CMD ["gunicorn", "app:app", "-b", "0.0.0.0:80", "--log-file", "-", "--access-logfile", "-", "--workers", "4", "--keep-alive", "0"]
 
-#AppD config
-# CMD ["pyagent","run","-c","appdynamics.cfg","--", "gunicorn", "app:app", "-b", "0.0.0.0:80", "--log-file", "-", "--access-logfile", "-", "--workers", "4", "--keep-alive", "0"]
-CMD ["pyagent", "run", "-c", "./appdynamics.cfg", "--", "gunicorn", "-b", "0.0.0.0:80", "--workers", "4", "--keep-alive", "0", "app:app"]
