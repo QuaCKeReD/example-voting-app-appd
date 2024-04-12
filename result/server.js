@@ -1,3 +1,16 @@
+// AppD config
+require("appdynamics").profile({
+  controllerHostName: '34.105.231.232',
+  controllerPort: 8090, 
+  controllerSslEnabled: false,  // Set to true if controllerPort is SSL
+  accountName: 'customer1',
+  accountAccessKey: '2d98af63-beb9-4748-bc50-68c3e61ab9a1', //required
+  applicationName: 'VotingApp',
+  tierName: 'result', 
+  nodeName: 'process' 
+ });
+
+
 var express = require('express'),
     async = require('async'),
     { Pool } = require('pg'),
