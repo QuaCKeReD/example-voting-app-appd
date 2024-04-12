@@ -4,5 +4,5 @@ gunicorn
 
 #AppD config
 appdynamics
-# appdynamics-bindeps-linux-x64 
-# appdynamics-proxysupport-linux-x64
+appdynamics-bindeps-linux-x64 
+appdynamics-proxysupport-linux-x64

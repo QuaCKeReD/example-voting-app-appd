@@ -3,7 +3,7 @@ FROM python:3.11-slim AS base
 
 # Add curl for healthcheck
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl && \
+    apt-get install -y --no-install-recommends curl default-jdk && \
     rm -rf /var/lib/apt/lists/*
 
 # Set the application directory
@@ -37,4 +37,5 @@ EXPOSE 80
 # CMD ["gunicorn", "app:app", "-b", "0.0.0.0:80", "--log-file", "-", "--access-logfile", "-", "--workers", "4", "--keep-alive", "0"]
 
 #AppD config
-CMD ["pyagent","run","-c","appdynamics.cfg","--", "gunicorn", "app:app", "-b", "0.0.0.0:80", "--log-file", "-", "--access-logfile", "-", "--workers", "4", "--keep-alive", "0"]
+# CMD ["pyagent","run","-c","appdynamics.cfg","--", "gunicorn", "app:app", "-b", "0.0.0.0:80", "--log-file", "-", "--access-logfile", "-", "--workers", "4", "--keep-alive", "0"]
+CMD ["pyagent", "run", "-c", "./appdynamics.cfg", "--", "gunicorn", "-b", "0.0.0.0:80", "--workers", "4", "--keep-alive", "0", "app:app"]
