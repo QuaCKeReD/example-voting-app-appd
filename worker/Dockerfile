@@ -24,8 +24,15 @@ FROM mcr.microsoft.com/dotnet/runtime:7.0
 WORKDIR /app
 COPY --from=build /app .
 
-ENV CORECLR_ENABLE_PROFILING=1 \
-  CORECLR_PROFILER={57e1aa68-2229-41aa-9931-a6e93bbc64d8} \
-  CORECLR_PROFILER_PATH=/app/libappdprofiler.so
+# Copy agent binaries to the image from current folder
+RUN mkdir -p /opt/appdynamics/dotnet
+ADD libappdprofiler.so /opt/appdynamics/dotnet/
+ADD AppDynamics.Agent.netstandard.dll /opt/appdynamics/dotnet/
+ADD AppDynamicsConfig.json /opt/appdynamics/dotnet/
+
+# Mandatory settings required to attach the agent to the .NET application
+ENV CORECLR_PROFILER={57e1aa68-2229-41aa-9931-a6e93bbc64d8} \
+    CORECLR_ENABLE_PROFILING=1 \
+    CORECLR_PROFILER_PATH=/opt/appdynamics/dotnet/libappdprofiler.so
 
 ENTRYPOINT ["dotnet", "Worker.dll"]
