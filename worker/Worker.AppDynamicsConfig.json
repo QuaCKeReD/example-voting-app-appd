@@ -4,8 +4,7 @@
     "port": 8090,
     "account": "customer1",
     "password": "2d98af63-beb9-4748-bc50-68c3e61ab9a1",
-    "ssl": false,
-    "enable_tls12": false
+    "ssl": false
   },
   "application": {
     "name": "VotingApp",
