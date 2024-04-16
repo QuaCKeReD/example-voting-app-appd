@@ -11,7 +11,8 @@
     "tier": "worker",
     "node": "worker"
   },
-  "feature": [
-    "FULL_AGENT"
+  "feature": [ 
+    "FULL_AGENT", 
+    "PREVIEW_FEATURE" 
   ]
 }

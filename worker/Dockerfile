@@ -27,11 +27,24 @@ COPY --from=build /app .
 # Copy agent binaries to the image from current folder
 COPY libappdprofiler.so .
 COPY AppDynamics.Agent.netstandard.dll .
-COPY Worker.AppDynamicsConfig.json .
+# COPY Worker.AppDynamicsConfig.json .
 
 # Mandatory settings required to attach the agent to the .NET application
-ENV CORECLR_PROFILER={57e1aa68-2229-41aa-9931-a6e93bbc64d8} \
-    CORECLR_ENABLE_PROFILING=1 \
-    CORECLR_PROFILER_PATH=/app/libappdprofiler.so
+ENV CORECLR_PROFILER={57e1aa68-2229-41aa-9931-a6e93bbc64d8}
+ENV CORECLR_ENABLE_PROFILING=1
+ENV CORECLR_PROFILER_PATH=/app/libappdprofiler.so
+
+# Configure connection to the controller
+ENV APPDYNAMICS_CONTROLLER_HOST_NAME=34.105.231.232
+ENV APPDYNAMICS_CONTROLLER_PORT=8090
+ENV APPDYNAMICS_CONTROLLER_SSL_ENABLED=false
+ENV APPDYNAMICS_AGENT_ACCOUNT_NAME=customer1
+ENV APPDYNAMICS_AGENT_ACCOUNT_ACCESS_KEY=2d98af63-beb9-4748-bc50-68c3e61ab9a1
+
+# Configure application identity in AppDynamics
+ENV APPDYNAMICS_AGENT_APPLICATION_NAME="VotingApp"
+ENV APPDYNAMICS_AGENT_TIER_NAME="worker"
+ENV APPDYNAMICS_AGENT_REUSE_NODE_NAME=true
+ENV APPDYNAMICS_AGENT_REUSE_NODE_NAME_PREFIX="worker"
 
 ENTRYPOINT ["dotnet", "Worker.dll"]
