@@ -25,14 +25,15 @@ WORKDIR /app
 COPY --from=build /app .
 
 # Copy agent binaries to the image from current folder
-COPY libappdprofiler.so .
-COPY AppDynamics.Agent.netstandard.dll .
-# COPY Worker.AppDynamicsConfig.json .
+RUN mkdir -p /opt/appdynamics/dotnet
+ADD libappdprofiler.so /opt/appdynamics/dotnet/
+ADD AppDynamics.Agent.netstandard.dll /opt/appdynamics/dotnet/
+# ADD Worker.AppDynamicsConfig.json /opt/appdynamics/dotnet/
 
 # Mandatory settings required to attach the agent to the .NET application
 ENV CORECLR_PROFILER={57e1aa68-2229-41aa-9931-a6e93bbc64d8}
 ENV CORECLR_ENABLE_PROFILING=1
-ENV CORECLR_PROFILER_PATH=/app/libappdprofiler.so
+ENV CORECLR_PROFILER_PATH=/opt/appdynamics/dotnet/libappdprofiler.so
 
 # Configure connection to the controller
 ENV APPDYNAMICS_CONTROLLER_HOST_NAME=34.105.231.232
