@@ -24,9 +24,8 @@ FROM mcr.microsoft.com/dotnet/runtime:7.0
 WORKDIR /app
 COPY --from=build /app .
 
-ENV CORECLR_ENABLE_PROFILING=1
-ENV CORECLR_PROFILER={39AEABC1-56A5-405F-B8E7-C3668490DB4A}
-ENV CORECLR_PROFILER_PATH_32=/app/AppDynamics.Profiler_x86.dll
-ENV CORECLR_PROFILER_PATH_64=/app/AppDynamics.Profiler_x64.dll
+ENV CORECLR_ENABLE_PROFILING=1 \
+  CORECLR_PROFILER={57e1aa68-2229-41aa-9931-a6e93bbc64d8} \
+  CORECLR_PROFILER_PATH=/app/libappdprofiler.so
 
 ENTRYPOINT ["dotnet", "Worker.dll"]
